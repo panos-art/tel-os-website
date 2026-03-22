@@ -1679,10 +1679,15 @@ async function handleSubmit(e) {
   btn.textContent = 'Sending...';
 
   try {
-    const res = await fetch('/api/waitlist', {
+    const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({
+        access_key: 'fa6eb24b-baba-43fa-801b-61bdd522f1e8',
+        subject: 'New tel-os waitlist signup',
+        from_name: 'tel-os Waitlist',
+        email: email,
+      }),
     });
 
     if (res.ok) {
