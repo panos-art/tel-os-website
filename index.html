@@ -1329,7 +1329,7 @@ footer {
       <div class="stat-label">Physical SIMs ever</div>
     </div>
     <div class="stat reveal">
-      <div class="stat-num">€<span>2</span></div>
+      <div class="stat-num">€<span>5</span></div>
       <div class="stat-label">Starting per month</div>
     </div>
   </div>
@@ -1466,7 +1466,7 @@ footer {
       <div class="plan-tier">Individual</div>
       <div class="plan-for">For personal use</div>
       <div class="plan-name">Solo</div>
-      <div class="plan-price"><sup>€</sup>2<sub>/mo</sub></div>
+      <div class="plan-price"><sup>€</sup>5<sub>/mo</sub></div>
       <div class="plan-cycle">1 eSIM number · billed monthly</div>
       <div class="plan-divider"></div>
       <ul class="plan-features">
@@ -1484,7 +1484,7 @@ footer {
       <div class="plan-tier">Traveler / Freelancer</div>
       <div class="plan-for">For those always on the move</div>
       <div class="plan-name">Roamer</div>
-      <div class="plan-price"><sup>€</sup>5<sub>/mo</sub></div>
+      <div class="plan-price"><sup>€</sup>8<sub>/mo</sub></div>
       <div class="plan-cycle">Up to 3 numbers · billed monthly</div>
       <div class="plan-divider"></div>
       <ul class="plan-features">
@@ -1501,7 +1501,7 @@ footer {
       <div class="plan-tier">Small Business</div>
       <div class="plan-for">For teams</div>
       <div class="plan-name">Team</div>
-      <div class="plan-price"><sup>€</sup>8<sub>/seat</sub></div>
+      <div class="plan-price"><sup>€</sup>12<sub>/seat</sub></div>
       <div class="plan-cycle">Per number · billed monthly</div>
       <div class="plan-divider"></div>
       <ul class="plan-features">
@@ -1668,17 +1668,38 @@ document.querySelectorAll('.reveal').forEach((el, i) => {
 });
 
 // Waitlist form
-function handleSubmit(e) {
+async function handleSubmit(e) {
   e.preventDefault();
   const btn = e.target.querySelector('button');
   const msg = document.getElementById('form-msg');
   const input = e.target.querySelector('input');
-  btn.textContent = '✓ You\'re on the list';
-  btn.style.background = 'var(--signal2)';
+  const email = input.value;
+
   btn.disabled = true;
-  input.disabled = true;
-  msg.textContent = 'We\'ll reach out before launch. Welcome aboard.';
-  msg.style.color = 'var(--signal)';
+  btn.textContent = 'Sending...';
+
+  try {
+    const res = await fetch('/api/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+
+    if (res.ok) {
+      btn.textContent = '\u2713 You\u2019re on the list';
+      btn.style.background = 'var(--signal2)';
+      input.disabled = true;
+      msg.textContent = 'We\u2019ll reach out before launch. Welcome aboard.';
+      msg.style.color = 'var(--signal)';
+    } else {
+      throw new Error('Request failed');
+    }
+  } catch {
+    btn.textContent = 'Join waitlist \u2192';
+    btn.disabled = false;
+    msg.textContent = 'Something went wrong. Please try again.';
+    msg.style.color = '#ff6b6b';
+  }
 }
 
 // Smooth nav active states
