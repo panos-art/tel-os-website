@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>tel-os — Your number. No carrier needed.</title>
+<meta name="description" content="Real mobile numbers delivered as eSIMs. Works with WhatsApp, Viber, Signal & Messenger. For small teams and global travelers. No contracts, no physical SIM."/>
+<meta property="og:title" content="tel-os — Your number. No carrier needed."/>
+<meta property="og:description" content="Real eSIM phone numbers for teams and travelers. Internet-only, instant activation, 5 countries at launch."/>
+<meta property="og:url" content="https://tel-os.app"/>
+<meta name="theme-color" content="#060D16"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --bg:        #060D16;
+  --bg2:       #0B1520;
+  --bg3:       #111E2E;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --signal:    #00C896;
+  --signal2:   #00A87E;
+  --signal-bg: rgba(0,200,150,0.08);
+  --signal-b:  rgba(0,200,150,0.2);
+  --text:      #E8EDF2;
+  --text2:     #8A9AAE;
+  --text3:     #4A5A6A;
+  --alert:     #FF6B4A;
+  --font-d:    'Syne', sans-serif;
+  --font-b:    'DM Sans', sans-serif;
+  --font-m:    'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── GRID BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,200,150,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,200,150,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 64px;
+  background: rgba(6,13,22,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.nav-logo-mark {
+  width: 34px;
+  height: 34px;
+  background: var(--signal-bg);
+  border: 1px solid var(--signal-b);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-logo-name {
+  font-family: var(--font-m);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.nav-logo-name span { color: var(--signal); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 14px;
+  color: var(--text2);
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--text); }
+
+.nav-cta {
+  background: var(--signal);
+  color: #031410 !important;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 500 !important;
+  font-size: 14px;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.15s !important;
+}
+
+.nav-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* ── SECTIONS ── */
+section {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.section-full {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 100px;
+  padding-bottom: 80px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-m);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--signal);
+  background: var(--signal-bg);
+  border: 1px solid var(--signal-b);
+  border-radius: 100px;
+  padding: 5px 14px;
+  margin-bottom: 28px;
+  animation: fadeUp 0.6s ease both;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--signal);
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero h1 {
+  font-family: var(--font-d);
+  font-size: clamp(48px, 7vw, 88px);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 24px;
+  animation: fadeUp 0.6s ease 0.1s both;
+}
+
+.hero h1 .hl {
+  color: var(--signal);
+  display: inline-block;
+}
+
+.hero h1 .dim {
+  color: var(--text2);
+}
+
+.hero-sub {
+  font-size: 18px;
+  color: var(--text2);
+  line-height: 1.7;
+  max-width: 560px;
+  margin-bottom: 36px;
+  font-weight: 300;
+  animation: fadeUp 0.6s ease 0.2s both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 56px;
+  animation: fadeUp 0.6s ease 0.3s both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--signal);
+  color: #031410;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-family: var(--font-b);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text2);
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-family: var(--font-b);
+  font-size: 15px;
+  font-weight: 400;
+  text-decoration: none;
+  border: 1px solid var(--border2);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-secondary:hover { border-color: var(--text3); color: var(--text); }
+
+.hero-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.6s ease 0.4s both;
+}
+
+.tag {
+  font-family: var(--font-m);
+  font-size: 11px;
+  color: var(--text3);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 10px;
+  letter-spacing: 0.05em;
+}
+
+/* ── SIGNAL VISUAL ── */
+.hero-visual {
+  margin-top: 60px;
+  position: relative;
+  animation: fadeUp 0.6s ease 0.5s both;
+}
+
+.signal-card {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 28px 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}
+
+.sig-num {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sig-flag {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.sig-country {
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.sig-number {
+  font-family: var(--font-m);
+  font-size: 14px;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.sig-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--signal);
+  margin-top: 2px;
+}
+
+.sig-status::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--signal);
+  animation: pulse 2s ease infinite;
+}
+
+.sig-card-footer {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sig-apps {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sig-app {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--text3);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 3px 8px;
+}
+
+.sig-esim-badge {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--signal);
+  background: var(--signal-bg);
+  border: 1px solid var(--signal-b);
+  border-radius: 5px;
+  padding: 3px 10px;
+  letter-spacing: 0.08em;
+}
+
+/* ── STATS BAR ── */
+.stats-bar {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  padding: 0;
+  margin: 0;
+}
+
+.stats-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: stretch;
+}
+
+.stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 28px 0;
+  border-right: 1px solid var(--border);
+  padding-right: 32px;
+  padding-left: 32px;
+}
+
+.stat:first-child { padding-left: 0; }
+.stat:last-child { border-right: none; }
+
+.stat-num {
+  font-family: var(--font-d);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-num span { color: var(--signal); }
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text3);
+  font-weight: 300;
+}
+
+/* ── SECTION HEADER ── */
+.s-header {
+  margin-bottom: 52px;
+  padding-top: 96px;
+}
+
+.s-eyebrow {
+  font-family: var(--font-m);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 12px;
+}
+
+.s-title {
+  font-family: var(--font-d);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.s-sub {
+  font-size: 17px;
+  color: var(--text2);
+  font-weight: 300;
+  max-width: 540px;
+  line-height: 1.65;
+}
+
+/* ── HOW IT WORKS ── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 96px;
+}
+
+.step-card {
+  background: var(--bg2);
+  padding: 36px 40px;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.step-card:hover { background: var(--bg3); }
+
+.step-num {
+  font-family: var(--font-m);
+  font-size: 11px;
+  color: var(--signal);
+  letter-spacing: 0.12em;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-num::after {
+  content: '';
+  flex: 1;
+  max-width: 32px;
+  height: 1px;
+  background: var(--signal-b);
+}
+
+.step-title {
+  font-family: var(--font-d);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+
+.step-desc {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+.step-apps {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.step-app {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--text3);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 3px 9px;
+}
+
+/* ── FOR WHO ── */
+.who-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 96px;
+}
+
+.who-card {
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 36px;
+  background: var(--bg2);
+  position: relative;
+  overflow: hidden;
+}
+
+.who-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--signal);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.who-card:hover::before { opacity: 1; }
+
+.who-type {
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 12px;
+}
+
+.who-title {
+  font-family: var(--font-d);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  line-height: 1.15;
+}
+
+.who-desc {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.65;
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+
+.who-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.who-list li {
+  font-size: 13px;
+  color: var(--text2);
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.who-check {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--signal-bg);
+  border: 1px solid var(--signal-b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── COUNTRIES ── */
+.countries-section {
+  padding-top: 0;
+  padding-bottom: 96px;
+}
+
+.countries-strip {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.country-card {
+  flex: 1;
+  min-width: 160px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 24px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.country-card:hover {
+  border-color: var(--signal-b);
+  background: var(--bg3);
+}
+
+.country-flag { font-size: 28px; margin-bottom: 10px; }
+
+.country-name {
+  font-family: var(--font-d);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+
+.country-prefix {
+  font-family: var(--font-m);
+  font-size: 12px;
+  color: var(--signal);
+}
+
+.country-note {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.more-coming {
+  flex: 1;
+  min-width: 160px;
+  background: transparent;
+  border: 1px dashed var(--border2);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.more-label {
+  font-family: var(--font-m);
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+}
+
+.more-count {
+  font-family: var(--font-d);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text3);
+  letter-spacing: -0.02em;
+}
+
+/* ── PRICING ── */
+.pricing-wrap {
+  background: var(--section-full);
+  padding-bottom: 96px;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.plan {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  transition: border-color 0.2s;
+}
+
+.plan:hover { border-color: var(--text3); }
+
+.plan.featured {
+  border-color: var(--signal-b);
+  background: var(--bg3);
+}
+
+.plan-tag {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--signal);
+  color: #031410;
+  font-family: var(--font-m);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.plan-tier {
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 16px;
+}
+
+.plan-for {
+  font-size: 12px;
+  color: var(--signal);
+  margin-bottom: 4px;
+  font-weight: 400;
+}
+
+.plan-name {
+  font-family: var(--font-d);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.plan-price {
+  font-family: var(--font-d);
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.plan-price sup {
+  font-size: 20px;
+  vertical-align: super;
+  font-weight: 400;
+}
+
+.plan-price sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text2);
+  vertical-align: baseline;
+}
+
+.plan-cycle {
+  font-size: 12px;
+  color: var(--text3);
+  margin-bottom: 24px;
+  font-weight: 300;
+}
+
+.plan-divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 20px;
+}
+
+.plan-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.plan-features li {
+  font-size: 13px;
+  color: var(--text2);
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.plan-features li::before {
+  content: '·';
+  color: var(--signal);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.plan-cta {
+  display: block;
+  text-align: center;
+  margin-top: 24px;
+  padding: 12px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.plan .plan-cta {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+}
+
+.plan .plan-cta:hover {
+  border-color: var(--text3);
+  color: var(--text);
+}
+
+.plan.featured .plan-cta {
+  background: var(--signal);
+  border: none;
+  color: #031410;
+}
+
+.plan.featured .plan-cta:hover { opacity: 0.9; }
+
+/* ── CLARITY ── */
+.clarity-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 96px;
+}
+
+.clarity-card {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  background: var(--bg2);
+}
+
+.clarity-title {
+  font-family: var(--font-d);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.clarity-items { display: flex; flex-direction: column; gap: 10px; }
+
+.clarity-item {
+  font-size: 14px;
+  color: var(--text2);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.ic-yes {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(0,200,150,0.1);
+  border: 1px solid rgba(0,200,150,0.25);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.ic-no {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(255,107,74,0.1);
+  border: 1px solid rgba(255,107,74,0.25);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── APP SECTION ── */
+.app-section {
+  padding-bottom: 96px;
+}
+
+.app-banner {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 52px 48px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
+}
+
+.app-headline {
+  font-family: var(--font-d);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.app-headline em { color: var(--signal); font-style: normal; }
+
+.app-desc {
+  font-size: 15px;
+  color: var(--text2);
+  font-weight: 300;
+  line-height: 1.6;
+  max-width: 420px;
+  margin-bottom: 24px;
+}
+
+.app-badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.app-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 13px;
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.2s;
+}
+
+.app-badge:hover { border-color: var(--signal-b); }
+
+.app-badge-label {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.app-badge-sub { font-size: 10px; color: var(--text3); }
+.app-badge-name { font-weight: 500; font-size: 14px; }
+
+.app-mockup {
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.phone-frame {
+  width: 180px;
+  height: 320px;
+  background: var(--bg3);
+  border: 2px solid var(--border2);
+  border-radius: 32px;
+  overflow: hidden;
+  position: relative;
+}
+
+.phone-notch {
+  width: 80px;
+  height: 26px;
+  background: var(--bg);
+  border-radius: 0 0 16px 16px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.phone-screen {
+  padding: 12px;
+}
+
+.phone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.phone-title {
+  font-family: var(--font-m);
+  font-size: 9px;
+  color: var(--text3);
+  letter-spacing: 0.1em;
+}
+
+.phone-signal {
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+}
+
+.phone-bar {
+  width: 3px;
+  background: var(--signal);
+  border-radius: 1px;
+}
+
+.phone-num-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+}
+
+.phone-num-country {
+  font-size: 8px;
+  color: var(--text3);
+  font-family: var(--font-m);
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+
+.phone-num-number {
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--text);
+}
+
+.phone-num-status {
+  font-size: 8px;
+  color: var(--signal);
+  margin-top: 2px;
+}
+
+/* ── WAITLIST ── */
+.waitlist-wrap {
+  border-top: 1px solid var(--border);
+  padding: 96px 0;
+}
+
+.waitlist-inner {
+  text-align: center;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.waitlist-title {
+  font-family: var(--font-d);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.waitlist-title em { color: var(--signal); font-style: normal; }
+
+.waitlist-sub {
+  font-size: 16px;
+  color: var(--text2);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.waitlist-form {
+  display: flex;
+  gap: 8px;
+  max-width: 440px;
+  margin: 0 auto 16px;
+}
+
+.waitlist-input {
+  flex: 1;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 13px 16px;
+  font-family: var(--font-b);
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.waitlist-input::placeholder { color: var(--text3); }
+.waitlist-input:focus { border-color: var(--signal-b); }
+
+.waitlist-btn {
+  background: var(--signal);
+  color: #031410;
+  border: none;
+  padding: 13px 22px;
+  border-radius: 10px;
+  font-family: var(--font-b);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.waitlist-btn:hover { opacity: 0.9; }
+
+.waitlist-note {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: var(--font-m);
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-logo {
+  font-family: var(--font-m);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text2);
+  letter-spacing: -0.02em;
+}
+
+.footer-logo span { color: var(--signal); }
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: var(--text3);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--text2); }
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: var(--font-m);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  section { padding: 0 20px; }
+  .stats-inner { padding: 0 20px; flex-wrap: wrap; }
+  .stat { min-width: 50%; border-right: none; border-bottom: 1px solid var(--border); padding: 20px; }
+  .hero h1 { font-size: 42px; }
+  .hero-sub { font-size: 16px; }
+  .signal-card { grid-template-columns: 1fr 1fr; }
+  .steps-grid { grid-template-columns: 1fr; }
+  .who-grid { grid-template-columns: 1fr; }
+  .countries-strip { flex-direction: column; }
+  .plans-grid { grid-template-columns: 1fr; }
+  .clarity-grid { grid-template-columns: 1fr; }
+  .app-banner { grid-template-columns: 1fr; }
+  .app-mockup { display: none; }
+  .waitlist-form { flex-direction: column; }
+  footer { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="2" fill="#00C896"/>
+        <path d="M10 10Q12 5 16 3.5" stroke="#00C896" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+        <path d="M10 10Q6 7 3.5 9" stroke="#00C896" stroke-width="1" stroke-linecap="round" fill="none" opacity=".7"/>
+        <path d="M10 10Q14 13.5 15.5 12" stroke="#00C896" stroke-width=".9" stroke-linecap="round" fill="none" opacity=".55"/>
+        <path d="M10 10Q7.5 15 8.5 17" stroke="#00C896" stroke-width=".7" stroke-linecap="round" fill="none" opacity=".35"/>
+        <circle cx="16" cy="3.5" r="1.2" fill="#00C896"/>
+        <circle cx="3.5" cy="9" r="1" fill="#00C896" opacity=".7"/>
+        <circle cx="15.5" cy="12" r=".8" fill="#00C896" opacity=".55"/>
+      </svg>
+    </div>
+    <div class="nav-logo-name">tel<span>-os</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#countries">Countries</a></li>
+    <li><a href="#waitlist" class="nav-cta">Join waitlist →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <div class="pulse-dot"></div>
+    eSIM · Internet-only · Launching Q3 2025
+  </div>
+  <h1>Your number.<br/><span class="dim">No</span> <span class="hl">carrier</span><br/><span class="dim">needed.</span></h1>
+  <p class="hero-sub">
+    Real mobile numbers — delivered as eSIMs — that work with WhatsApp, Viber, Signal, and Messenger. For small teams and global travelers. No physical SIM, no voice plans, no carrier contracts.
+  </p>
+  <div class="hero-actions">
+    <a href="#waitlist" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v5l3 3" stroke="#031410" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="8" r="6.5" stroke="#031410" stroke-width="1.5"/></svg>
+      Join early access
+    </a>
+    <a href="#how" class="btn-secondary">See how it works →</a>
+  </div>
+  <div class="hero-tags">
+    <span class="tag">eSIM only</span>
+    <span class="tag">internet-only</span>
+    <span class="tag">no contracts</span>
+    <span class="tag">instant activation</span>
+    <span class="tag">5 countries at launch</span>
+    <span class="tag">web + mobile app</span>
+  </div>
+
+  <!-- Signal card mockup -->
+  <div class="hero-visual reveal">
+    <div class="signal-card">
+      <div class="sig-num">
+        <div class="sig-flag">🇬🇧</div>
+        <div class="sig-country">United Kingdom</div>
+        <div class="sig-number">+44 7700 900142</div>
+        <div class="sig-status">Active</div>
+      </div>
+      <div class="sig-num">
+        <div class="sig-flag">🇩🇪</div>
+        <div class="sig-country">Germany</div>
+        <div class="sig-number">+49 1521 0039482</div>
+        <div class="sig-status">Active</div>
+      </div>
+      <div class="sig-num">
+        <div class="sig-flag">🇺🇸</div>
+        <div class="sig-country">United States</div>
+        <div class="sig-number">+1 415 555 0183</div>
+        <div class="sig-status">Active</div>
+      </div>
+      <div class="sig-card-footer">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:12px;color:var(--text3);font-family:var(--font-m);">Works on</span>
+          <div class="sig-apps">
+            <span class="sig-app">WhatsApp</span>
+            <span class="sig-app">Viber</span>
+            <span class="sig-app">Signal</span>
+            <span class="sig-app">Messenger</span>
+            <span class="sig-app">Telegram</span>
+          </div>
+        </div>
+        <div class="sig-esim-badge">eSIM</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar section-full">
+  <div class="stats-inner">
+    <div class="stat reveal">
+      <div class="stat-num"><span>5</span></div>
+      <div class="stat-label">Countries at launch</div>
+    </div>
+    <div class="stat reveal">
+      <div class="stat-num"><span>60</span>s</div>
+      <div class="stat-label">Average activation time</div>
+    </div>
+    <div class="stat reveal">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Physical SIMs ever</div>
+    </div>
+    <div class="stat reveal">
+      <div class="stat-num">€<span>2</span></div>
+      <div class="stat-label">Starting per month</div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="s-header reveal">
+    <div class="s-eyebrow">How it works</div>
+    <div class="s-title">A number in four steps.</div>
+    <div class="s-sub">No carrier store, no paperwork, no waiting. From signup to your first message in under two minutes.</div>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <div class="step-num">01</div>
+      <div class="step-title">Pick a country & number</div>
+      <div class="step-desc">Browse available local numbers across our launch countries. Real local prefixes — not virtual numbers with hidden limitations. Choose the one that fits where you are or where you're going.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">02</div>
+      <div class="step-title">eSIM delivered instantly</div>
+      <div class="step-desc">No physical SIM card, no shipping address, no waiting. Your number arrives as an eSIM profile. Scan a QR code in your phone's settings and you're live within seconds.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">03</div>
+      <div class="step-title">Register on any app</div>
+      <div class="step-desc">Use your new number to register or verify on any internet-based messaging or calling app — the same way you'd use any mobile number.</div>
+      <div class="step-apps">
+        <span class="step-app">WhatsApp</span>
+        <span class="step-app">Viber</span>
+        <span class="step-app">Signal</span>
+        <span class="step-app">Messenger</span>
+        <span class="step-app">Telegram</span>
+      </div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">04</div>
+      <div class="step-title">Manage from one dashboard</div>
+      <div class="step-desc">Add numbers for your whole team, assign roles, track usage, and manage billing — all from the tel-os web or mobile app. No IT team required. Cancel any number, any time.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHO -->
+<section id="who">
+  <div class="s-header reveal">
+    <div class="s-eyebrow">Who it's for</div>
+    <div class="s-title">Built for two kinds of people.</div>
+    <div class="s-sub">Small teams that need professional numbers, and individuals who want a second number without the complexity.</div>
+  </div>
+  <div class="who-grid">
+    <div class="who-card reveal">
+      <div class="who-type">Small Business</div>
+      <div class="who-title">Teams that sell & support</div>
+      <div class="who-desc">Real estate agents, marketing agencies, startups — any small team that needs dedicated work numbers without the hassle of a traditional business phone plan.</div>
+      <ul class="who-list">
+        <li><div class="who-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2L6.5 2" stroke="#00C896" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Real estate agents with a dedicated client-facing number</li>
+        <li><div class="who-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2L6.5 2" stroke="#00C896" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Sales reps — one number each, managed from one dashboard</li>
+        <li><div class="who-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2L6.5 2" stroke="#00C896" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Customer support teams with a shared inbound number</li>
+        <li><div class="who-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2L6.5 2" stroke="#00C896" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Marketing agencies managing client communications</li>
+        <li><div class="who-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2L6.5 2" stroke="#00C896" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Startups that need to look established from day one</li>
+      </ul>
+    </div>
+    <div class="who-card reveal">
+      <div class="who-type">Individuals</div>
+      <div class="who-title">Second number, zero hassle</div>
+      <div class="who-desc">Travelers, freelancers, remote workers, and anyone who wants a separate number for apps — without carrying two phones or getting a second SIM card.</div>
+      <ul class="who-list">
+        <li><div class="who-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2L6.5 2" stroke="#00C896" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Local number on WhatsApp or Viber while abroad</li>
+        <li><div class="who-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2L6.5 2" stroke="#00C896" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Separate work/personal number on a single phone</li>
+        <li><div class="who-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2L6.5 2" stroke="#00C896" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Privacy number for listings, dating apps, or side projects</li>
+        <li><div class="who-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2L6.5 2" stroke="#00C896" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Freelancers keeping clients off their personal line</li>
+        <li><div class="who-check"><svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2L6.5 2" stroke="#00C896" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Remote workers needing a local presence in client countries</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTRIES -->
+<section id="countries" class="countries-section">
+  <div class="s-header reveal">
+    <div class="s-eyebrow">Launch countries</div>
+    <div class="s-title">Five countries. Day one.</div>
+    <div class="s-sub">We're starting focused. Five markets, zero compromises. More countries ship every quarter.</div>
+  </div>
+  <div class="countries-strip">
+    <div class="country-card reveal">
+      <div class="country-flag">🇬🇷</div>
+      <div class="country-name">Greece</div>
+      <div class="country-prefix">+30</div>
+      <div class="country-note">Ideal for local businesses & EU travelers</div>
+    </div>
+    <div class="country-card reveal">
+      <div class="country-flag">🇬🇧</div>
+      <div class="country-name">United Kingdom</div>
+      <div class="country-prefix">+44</div>
+      <div class="country-note">Premium UK numbers for professionals</div>
+    </div>
+    <div class="country-card reveal">
+      <div class="country-flag">🇩🇪</div>
+      <div class="country-name">Germany</div>
+      <div class="country-prefix">+49</div>
+      <div class="country-note">Europe's largest business market</div>
+    </div>
+    <div class="country-card reveal">
+      <div class="country-flag">🇺🇸</div>
+      <div class="country-name">United States</div>
+      <div class="country-prefix">+1</div>
+      <div class="country-note">US numbers for global-facing teams</div>
+    </div>
+    <div class="country-card reveal">
+      <div class="country-flag">🇫🇷</div>
+      <div class="country-name">France</div>
+      <div class="country-prefix">+33</div>
+      <div class="country-note">French local presence, instantly</div>
+    </div>
+    <div class="more-coming reveal">
+      <div class="more-label">Coming next</div>
+      <div class="more-count">+20</div>
+      <div style="font-size:12px;color:var(--text3);">countries in 2025 roadmap</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="s-header reveal">
+    <div class="s-eyebrow">Pricing</div>
+    <div class="s-title">Simple. No surprises.</div>
+    <div class="s-sub">Three packages. Pay monthly, cancel whenever. No setup fees, no hidden roaming charges, ever.</div>
+  </div>
+  <div class="plans-grid" style="margin-bottom:32px;">
+    <div class="plan reveal">
+      <div class="plan-tier">Individual</div>
+      <div class="plan-for">For personal use</div>
+      <div class="plan-name">Solo</div>
+      <div class="plan-price"><sup>€</sup>2<sub>/mo</sub></div>
+      <div class="plan-cycle">1 eSIM number · billed monthly</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>1 real mobile number</li>
+        <li>1 country of your choice</li>
+        <li>Instant eSIM activation</li>
+        <li>Works on all messaging apps</li>
+        <li>Internet-only (no GSM calls/SMS)</li>
+        <li>Web dashboard access</li>
+      </ul>
+      <a href="#waitlist" class="plan-cta">Get early access</a>
+    </div>
+    <div class="plan featured reveal">
+      <div class="plan-tag">Most popular</div>
+      <div class="plan-tier">Traveler / Freelancer</div>
+      <div class="plan-for">For those always on the move</div>
+      <div class="plan-name">Roamer</div>
+      <div class="plan-price"><sup>€</sup>5<sub>/mo</sub></div>
+      <div class="plan-cycle">Up to 3 numbers · billed monthly</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Up to 3 eSIM numbers</li>
+        <li>Any of our supported countries</li>
+        <li>Swap countries freely</li>
+        <li>All messaging apps supported</li>
+        <li>Internet-only (no GSM calls/SMS)</li>
+        <li>Web + mobile app access</li>
+      </ul>
+      <a href="#waitlist" class="plan-cta">Get early access</a>
+    </div>
+    <div class="plan reveal">
+      <div class="plan-tier">Small Business</div>
+      <div class="plan-for">For teams</div>
+      <div class="plan-name">Team</div>
+      <div class="plan-price"><sup>€</sup>8<sub>/seat</sub></div>
+      <div class="plan-cycle">Per number · billed monthly</div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Unlimited numbers</li>
+        <li>Central team dashboard</li>
+        <li>Role & permission management</li>
+        <li>Usage analytics</li>
+        <li>Shared numbers for teams</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="#waitlist" class="plan-cta">Get early access</a>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--text3);text-align:center;font-family:var(--font-m);margin-bottom:96px;">
+    All plans: internet-only · no traditional SMS · no GSM voice · no physical SIM · cancel any time
+  </p>
+</section>
+
+<!-- CLARITY: IN/OUT -->
+<section>
+  <div class="s-header reveal">
+    <div class="s-eyebrow">Product clarity</div>
+    <div class="s-title">What tel-os is.<br/>What it isn't.</div>
+    <div class="s-sub">We made deliberate choices. Internet-first isn't a limitation — it's how modern people actually communicate.</div>
+  </div>
+  <div class="clarity-grid">
+    <div class="clarity-card reveal">
+      <div class="clarity-title" style="color:var(--signal);">What's included</div>
+      <div class="clarity-items">
+        <div class="clarity-item"><div class="ic-yes"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#00C896" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Real local mobile number with country prefix</div>
+        <div class="clarity-item"><div class="ic-yes"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#00C896" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>eSIM — activates in seconds via QR code</div>
+        <div class="clarity-item"><div class="ic-yes"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#00C896" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Works with WhatsApp, Viber, Signal, Messenger, Telegram</div>
+        <div class="clarity-item"><div class="ic-yes"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#00C896" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Data connection for internet-based communication</div>
+        <div class="clarity-item"><div class="ic-yes"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#00C896" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Web & mobile app dashboard</div>
+        <div class="clarity-item"><div class="ic-yes"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#00C896" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Multiple numbers per account</div>
+        <div class="clarity-item"><div class="ic-yes"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#00C896" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Cancel or swap numbers any time</div>
+      </div>
+    </div>
+    <div class="clarity-card reveal">
+      <div class="clarity-title" style="color:var(--alert);">Not included</div>
+      <div class="clarity-items">
+        <div class="clarity-item"><div class="ic-no"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#FF6B4A" stroke-width="1.3" stroke-linecap="round"/></svg></div>Traditional SMS to regular phone numbers</div>
+        <div class="clarity-item"><div class="ic-no"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#FF6B4A" stroke-width="1.3" stroke-linecap="round"/></svg></div>Voice calls on GSM/cellular networks</div>
+        <div class="clarity-item"><div class="ic-no"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#FF6B4A" stroke-width="1.3" stroke-linecap="round"/></svg></div>Physical SIM card — ever</div>
+        <div class="clarity-item"><div class="ic-no"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#FF6B4A" stroke-width="1.3" stroke-linecap="round"/></svg></div>Carrier contracts or minimum terms</div>
+        <div class="clarity-item"><div class="ic-no"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#FF6B4A" stroke-width="1.3" stroke-linecap="round"/></svg></div>Roaming charges or surprise fees</div>
+        <div class="clarity-item"><div class="ic-no"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#FF6B4A" stroke-width="1.3" stroke-linecap="round"/></svg></div>Emergency call services (112/911)</div>
+        <div class="clarity-item"><div class="ic-no"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 3l4 4M7 3l-4 4" stroke="#FF6B4A" stroke-width="1.3" stroke-linecap="round"/></svg></div>Hardware — everything is software</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP SECTION -->
+<section class="app-section">
+  <div class="app-banner reveal">
+    <div>
+      <div class="s-eyebrow" style="margin-bottom:12px;">Web & mobile app</div>
+      <div class="app-headline">Manage everything<br/>from <em>one place.</em></div>
+      <div class="app-desc">
+        The tel-os dashboard runs in your browser and on your phone. Issue numbers, manage your team, track usage — wherever you are, on whatever device you have.
+      </div>
+      <div class="app-badges">
+        <a href="#waitlist" class="app-badge">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="3" stroke="var(--text2)" stroke-width="1.2"/><path d="M7 10h6M10 7v6" stroke="var(--text2)" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <div class="app-badge-label">
+            <span class="app-badge-sub">Available now</span>
+            <span class="app-badge-name">Web App</span>
+          </div>
+        </a>
+        <a href="#waitlist" class="app-badge">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="6" y="2" width="8" height="16" rx="2" stroke="var(--text2)" stroke-width="1.2"/><circle cx="10" cy="15" r="1" fill="var(--text2)"/></svg>
+          <div class="app-badge-label">
+            <span class="app-badge-sub">Coming Q4 2025</span>
+            <span class="app-badge-name">iOS & Android</span>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="app-mockup">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-header">
+            <span class="phone-title">MY NUMBERS</span>
+            <div class="phone-signal">
+              <div class="phone-bar" style="height:4px;"></div>
+              <div class="phone-bar" style="height:7px;"></div>
+              <div class="phone-bar" style="height:10px;"></div>
+              <div class="phone-bar" style="height:13px;"></div>
+            </div>
+          </div>
+          <div class="phone-num-item">
+            <div class="phone-num-country">🇬🇷 GREECE</div>
+            <div class="phone-num-number">+30 210 555 0121</div>
+            <div class="phone-num-status">● Active · WhatsApp</div>
+          </div>
+          <div class="phone-num-item">
+            <div class="phone-num-country">🇬🇧 UNITED KINGDOM</div>
+            <div class="phone-num-number">+44 7700 900142</div>
+            <div class="phone-num-status">● Active · Viber</div>
+          </div>
+          <div class="phone-num-item">
+            <div class="phone-num-country">🇺🇸 UNITED STATES</div>
+            <div class="phone-num-number">+1 415 555 0183</div>
+            <div class="phone-num-status">● Active · Signal</div>
+          </div>
+          <div style="margin-top:10px;padding:8px;background:var(--signal-bg);border:1px solid var(--signal-b);border-radius:7px;text-align:center;">
+            <span style="font-size:10px;color:var(--signal);font-family:var(--font-m);">+ Add number</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<div class="section-full waitlist-wrap" id="waitlist">
+  <section>
+    <div class="waitlist-inner reveal">
+      <div class="s-eyebrow" style="justify-content:center;display:flex;margin-bottom:16px;">Early access</div>
+      <div class="waitlist-title">Be first<br/>when we <em>launch.</em></div>
+      <div class="waitlist-sub">
+        Join the waitlist and get early access, launch pricing, and a free first month on any plan.
+      </div>
+      <form class="waitlist-form" onsubmit="handleSubmit(event)">
+        <input type="email" class="waitlist-input" placeholder="you@company.com" required/>
+        <button type="submit" class="waitlist-btn">Join waitlist →</button>
+      </form>
+      <div class="waitlist-note" id="form-msg">No spam. No carrier. Just a number.</div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<div style="max-width:1080px;margin:0 auto;">
+  <footer>
+    <div class="footer-logo">tel<span>-os</span>.app</div>
+    <ul class="footer-links">
+      <li><a href="#">How it works</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Countries</a></li>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 tel-os · Internet-native phone numbers</div>
+  </footer>
+</div>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(el => {
+    if (el.isIntersecting) {
+      el.target.classList.add('visible');
+      observer.unobserve(el.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 4) * 0.07 + 's';
+  observer.observe(el);
+});
+
+// Waitlist form
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  const msg = document.getElementById('form-msg');
+  const input = e.target.querySelector('input');
+  btn.textContent = '✓ You\'re on the list';
+  btn.style.background = 'var(--signal2)';
+  btn.disabled = true;
+  input.disabled = true;
+  msg.textContent = 'We\'ll reach out before launch. Welcome aboard.';
+  msg.style.color = 'var(--signal)';
+}
+
+// Smooth nav active states
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 20) {
+    nav.style.borderBottomColor = 'rgba(255,255,255,0.1)';
+  } else {
+    nav.style.borderBottomColor = 'rgba(255,255,255,0.07)';
+  }
+});
+</script>
+</body>
+</html>
